@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <title>Gratitude Insights</title>
+  <title>Gratitude Challenge Surveys Dashboard</title>
   <style>
     :root {
       --bg: #050203;
@@ -139,7 +139,8 @@
       margin-left: 4px;
     }
 
-    input {
+    input,
+    select {
       width: 100%;
       background: rgba(0, 0, 0, 0.2);
       border: 1px solid var(--card-border);
@@ -151,11 +152,24 @@
       font-weight: 500;
       transition: all 0.2s;
       outline: none;
+      appearance: none;
+      /* specific for select to look like input */
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23dcaaaa%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 0.65em auto;
     }
 
-    input:focus {
+    input {
+      background-image: none;
+    }
+
+    /* remove arrow from normal inputs */
+
+    input:focus,
+    select:focus {
       border-color: var(--accent);
-      background: rgba(0, 0, 0, 0.3);
+      background-color: rgba(0, 0, 0, 0.3);
       box-shadow: 0 0 0 4px rgba(234, 67, 107, 0.1);
     }
 
@@ -390,7 +404,7 @@
 <body>
   <header>
     <div class="title-area">
-      <h1>Gratitude Insights</h1>
+      <h1>Gratitude Challenge Surveys Dashboard</h1>
       <p class="subtitle">Analyze survey scores between Day 0 and a comparison day to measure user progress.</p>
     </div>
   </header>
@@ -405,15 +419,19 @@
           <div class="controls">
             <div>
               <label>Challenge ID</label>
-              <input id="challengeId" placeholder="e.g. ChallengeFebruary2026" />
+              <select id="challengeId">
+                <option value="ChallengeFebruary2026">ChallengeFebruary2026</option>
+              </select>
             </div>
             <div>
               <label>Survey ID</label>
-              <input id="surveyId" placeholder="e.g. self_compassion_v1" />
+              <select id="surveyId">
+                <option value="self_compassion_v1">self_compassion_v1</option>
+              </select>
             </div>
             <div>
               <label>Comparison Day (Day N)</label>
-              <input id="dayN" type="number" min="0" step="1" placeholder="8" />
+              <input id="dayN" type="number" min="0" step="1" placeholder="28" />
               <div class="status" style="font-weight:400;margin-top:6px;font-size:12px;color:rgba(255,255,255,0.4)">
                 Comparing Day 0 vs. this day.</div>
             </div>
@@ -506,16 +524,6 @@
       </section>
     </div>
   </div>
-
-  <footer>
-    <div>Notes:</div>
-    <ul>
-      <li>Score buckets are: <span class="mono">[1,2)</span>, <span class="mono">[2,3)</span>, <span
-          class="mono">[3,4)</span>, <span class="mono">[4,5]</span> (5 goes into the last bucket).</li>
-      <li>“Change” is computed only for users who have both Day 0 and Day N results (matched by <span
-          class="mono">userId</span>).</li>
-    </ul>
-  </footer>
 
   <script>
     // -----------------------------
@@ -820,10 +828,10 @@
       const { day0, dayN } = makeDemo();
       $('challengeId').value = 'ChallengeFebruary2026';
       $('surveyId').value = 'self_compassion_v1';
-      $('dayN').value = '8';
+      $('dayN').value = '28';
 
       const res = analyze(day0, dayN);
-      renderAll(res, 8);
+      renderAll(res, 28);
       setStatus('Loaded demo data.');
       setBadge($('modeBadge'), 'Demo', 'warn');
     });
@@ -865,7 +873,7 @@
     });
 
     // Nice defaults
-    $('dayN').value = '8';
+    $('dayN').value = '28';
 
   </script>
 </body>
