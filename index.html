@@ -4,21 +4,24 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Survey Results Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>Gratitude Insights</title>
   <style>
     :root {
-      --bg: #0b1220;
-      --card: #0f1b33;
-      --card2: #0c172d;
-      --text: #eaf0ff;
-      --muted: #a8b3d6;
-      --line: rgba(234, 240, 255, .10);
-      --good: #4ade80;
-      --bad: #fb7185;
+      --bg: #050203;
+      --card-bg: rgba(25, 10, 14, 0.6);
+      --card-border: rgba(234, 67, 107, 0.15);
+      --text: #fff0f3;
+      --muted: #dcaaaa;
+      --accent: #EA436B;
+      --accent-glow: rgba(234, 67, 107, 0.35);
+      --success: #10b981;
+      --danger: #f43f5e;
       --warn: #fbbf24;
-      --accent: #60a5fa;
-      --shadow: 0 10px 30px rgba(0, 0, 0, .35);
-      --radius: 18px;
+      --radius: 24px;
+      --font-main: 'Outfit', sans-serif;
     }
 
     * {
@@ -27,56 +30,62 @@
 
     body {
       margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: radial-gradient(1000px 700px at 20% -10%, rgba(96, 165, 250, .18), transparent 60%),
-        radial-gradient(900px 600px at 110% 10%, rgba(74, 222, 128, .14), transparent 55%),
-        radial-gradient(700px 500px at 60% 120%, rgba(251, 191, 36, .10), transparent 55%),
-        var(--bg);
+      font-family: var(--font-main);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(234, 67, 107, 0.15), transparent 40%),
+        radial-gradient(circle at 85% 10%, rgba(251, 191, 36, 0.08), transparent 40%),
+        radial-gradient(circle at 50% 110%, rgba(234, 67, 107, 0.2), transparent 50%);
+      background-attachment: fixed;
       color: var(--text);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
 
     header {
-      padding: 28px 18px 10px;
-      max-width: 1100px;
+      padding: 40px 20px 20px;
+      max-width: 1000px;
       margin: 0 auto;
+      text-align: center;
     }
 
-    .title {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      justify-content: space-between;
-      flex-wrap: wrap;
+    .title-area {
+      margin-bottom: 30px;
     }
 
     h1 {
       margin: 0;
-      font-size: 26px;
-      letter-spacing: .2px;
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, #ffdde5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
-      margin: 8px 0 0;
+      margin: 10px auto 0;
       color: var(--muted);
-      line-height: 1.5;
-      max-width: 72ch;
-      font-size: 14px;
+      font-size: 16px;
+      font-weight: 400;
+      max-width: 600px;
+      line-height: 1.6;
     }
 
     .container {
-      max-width: 1100px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 14px 18px 40px;
+      padding: 0 20px 60px;
     }
 
     .grid {
       display: grid;
-      gap: 14px;
+      gap: 20px;
     }
 
-    @media(min-width: 900px) {
+    @media(min-width: 800px) {
       .grid.cols-2 {
-        grid-template-columns: 1.15fr .85fr;
+        grid-template-columns: 1fr 1fr;
       }
 
       .grid.cols-3 {
@@ -85,300 +94,304 @@
     }
 
     .card {
-      background: linear-gradient(180deg, rgba(255, 255, 255, .04), rgba(255, 255, 255, .02));
-      border: 1px solid var(--line);
+      background: var(--card-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid var(--card-border);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
 
     .card .hd {
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--line);
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--card-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      background: rgba(0, 0, 0, .10);
     }
 
     .card .hd h2 {
       margin: 0;
-      font-size: 14px;
-      letter-spacing: .25px;
-      color: var(--text);
-      font-weight: 650;
+      font-size: 16px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .card .bd {
-      padding: 14px 16px 16px;
+      padding: 24px;
     }
 
+    /* Config form */
     .controls {
+      display: grid;
+      gap: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 8px;
+      margin-left: 4px;
+    }
+
+    input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-family: var(--font-main);
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.2s;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--accent);
+      background: rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 0 4px rgba(234, 67, 107, 0.1);
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .btn {
+      appearance: none;
+      border: none;
+      background: var(--accent);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 99px;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-weight: 700;
+      font-size: 15px;
+      letter-spacing: 0.3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.2s;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 25px var(--accent-glow);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn.secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      box-shadow: none;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn.secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* KPIs */
+    .kpis {
       display: grid;
       gap: 12px;
       grid-template-columns: 1fr;
     }
 
-    @media(min-width: 900px) {
-      .controls {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
-    label {
-      display: block;
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    input {
-      width: 100%;
-      background: rgba(0, 0, 0, .18);
-      border: 1px solid var(--line);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 12px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: rgba(96, 165, 250, .55);
-      box-shadow: 0 0 0 3px rgba(96, 165, 250, .15);
-    }
-
-    .row {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      appearance: none;
-      border: 1px solid rgba(96, 165, 250, .35);
-      background: linear-gradient(180deg, rgba(96, 165, 250, .22), rgba(96, 165, 250, .10));
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      cursor: pointer;
-      font-weight: 650;
-      letter-spacing: .2px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn:disabled {
-      opacity: .55;
-      cursor: not-allowed;
-    }
-
-    .btn.secondary {
-      border-color: rgba(255, 255, 255, .16);
-      background: rgba(0, 0, 0, .18);
-      font-weight: 600;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, .14);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .pill b {
-      color: var(--text);
-      font-weight: 700;
-    }
-
-    .status {
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .status.error {
-      color: #fecaca;
-    }
-
-    .kpis {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: 1fr;
-    }
-
-    @media(min-width: 700px) {
+    @media(min-width: 600px) {
       .kpis {
         grid-template-columns: repeat(3, 1fr);
       }
     }
 
     .kpi {
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, .14);
-      border-radius: 16px;
-      padding: 12px 12px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.03);
     }
 
     .kpi .label {
       color: var(--muted);
       font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .kpi .value {
-      font-size: 22px;
-      font-weight: 780;
-      margin-top: 6px;
+      font-size: 28px;
+      font-weight: 800;
+      margin: 8px 0 4px;
+      color: #fff;
     }
 
     .kpi .hint {
       font-size: 12px;
-      color: var(--muted);
-      margin-top: 6px;
+      color: rgba(255, 255, 255, 0.4);
     }
 
+    /* Bars/Tables */
     .table {
       width: 100%;
       border-collapse: collapse;
-      overflow: hidden;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, .10);
-    }
-
-    .table th,
-    .table td {
-      padding: 10px 10px;
-      border-bottom: 1px solid rgba(234, 240, 255, .08);
-      text-align: left;
-      font-size: 13px;
-      color: var(--text);
     }
 
     .table th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
       color: var(--muted);
-      font-weight: 650;
-      font-size: 12px;
+      padding: 0 0 10px;
+      opacity: 0.7;
     }
 
-    .table tr:last-child td {
-      border-bottom: none;
+    .table td {
+      padding: 8px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 14px;
+      color: var(--text);
     }
 
     .bars {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
+      margin-bottom: 20px;
     }
 
     .barRow {
-      display: grid;
-      grid-template-columns: 80px 1fr 56px;
-      gap: 10px;
+      display: flex;
       align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
     }
 
     .barRow .range {
+      width: 60px;
+      font-size: 13px;
       color: var(--muted);
-      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .barRow .count {
+      width: 40px;
+      font-size: 13px;
+      color: #fff;
+      text-align: right;
+      font-weight: 600;
     }
 
     .bar {
-      height: 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(234, 240, 255, .10);
-      background: rgba(255, 255, 255, .06);
-      position: relative;
+      flex: 1;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
       overflow: hidden;
     }
 
     .fill {
-      position: absolute;
-      inset: 0;
-      width: 0%;
-      background: linear-gradient(90deg, rgba(96, 165, 250, .75), rgba(74, 222, 128, .65));
-      border-radius: 999px;
+      height: 100%;
+      background: linear-gradient(90deg, #EA436B, #F472B6);
+      border-radius: 4px;
     }
 
-    .count {
-      font-size: 12px;
-      color: var(--text);
-      text-align: right;
-    }
-
-    .deltaGrid {
-      display: grid;
-      gap: 10px;
-      grid-template-columns: 1fr;
-    }
-
-    @media(min-width: 900px) {
-      .deltaGrid {
-        grid-template-columns: 1fr 1fr;
-      }
-    }
-
+    /* Badges */
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      border: 1px solid var(--line);
-      background: rgba(0, 0, 0, .12);
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.1);
       color: var(--muted);
     }
 
     .badge.good {
-      color: #bbf7d0;
-      border-color: rgba(74, 222, 128, .25);
-      background: rgba(74, 222, 128, .10);
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
     }
 
     .badge.bad {
-      color: #fecdd3;
-      border-color: rgba(251, 113, 133, .25);
-      background: rgba(251, 113, 133, .10);
+      background: rgba(244, 63, 94, 0.2);
+      color: #fda4af;
     }
 
     .badge.warn {
-      color: #fde68a;
-      border-color: rgba(251, 191, 36, .28);
-      background: rgba(251, 191, 36, .10);
+      background: rgba(251, 191, 36, 0.2);
+      color: #fcd34d;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px 12px;
+      border-radius: 99px;
+    }
+
+    .pill b {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .status {
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--success);
+      font-weight: 500;
+    }
+
+    .status.error {
+      color: var(--danger);
     }
 
     footer {
+      text-align: center;
       color: var(--muted);
-      font-size: 12px;
-      padding: 18px;
-      max-width: 1100px;
-      margin: 0 auto;
-      opacity: .9;
+      font-size: 13px;
+      padding: 40px;
+      opacity: 0.5;
     }
 
     .mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
     }
+
+    /* Mapping mono to bold sans for cleaner look */
   </style>
 </head>
 
 <body>
   <header>
-    <div class="title">
-      <div>
-        <h1>Survey Results Dashboard</h1>
-        <p class="subtitle">Fetches survey scores from your API, shows score buckets for <b>Day 0</b> vs <b>Day N</b>,
-          and computes per-user change (Day N − Day 0) for users who have both.</p>
-      </div>
-      <div class="pill"><span>Bins:</span> <b>1–2</b> <b>2–3</b> <b>3–4</b> <b>4–5</b></div>
+    <div class="title-area">
+      <h1>Gratitude Insights</h1>
+      <p class="subtitle">Analyze survey scores between Day 0 and a comparison day to measure user progress.</p>
     </div>
   </header>
 
@@ -386,29 +399,36 @@
     <div class="grid cols-2">
       <section class="card">
         <div class="hd">
-          <h2>Configuration</h2><span class="badge mono" id="apiHint">GET /survey-results</span>
+          <h2>Report Settings</h2>
         </div>
         <div class="bd">
           <div class="controls">
             <div>
-              <label>challengeId</label>
-              <input id="challengeId" placeholder="ChallengeFebruary2026" />
+              <label>Challenge ID</label>
+              <input id="challengeId" placeholder="e.g. ChallengeFebruary2026" />
             </div>
             <div>
-              <label>surveyId</label>
-              <input id="surveyId" placeholder="self_compassion_v1" />
+              <label>Survey ID</label>
+              <input id="surveyId" placeholder="e.g. self_compassion_v1" />
             </div>
             <div>
-              <label>Day N (comparison day)</label>
+              <label>Comparison Day (Day N)</label>
               <input id="dayN" type="number" min="0" step="1" placeholder="8" />
-              <div class="status">We will always fetch Day 0 and Day N.</div>
+              <div class="status" style="font-weight:400;margin-top:6px;font-size:12px;color:rgba(255,255,255,0.4)">
+                Comparing Day 0 vs. this day.</div>
             </div>
           </div>
-          <div style="height:12px"></div>
+          <div style="height:20px"></div>
           <div class="row">
-            <button class="btn" id="runBtn">▶ Fetch & Analyze</button>
-            <button class="btn secondary" id="demoBtn">✨ Load Demo Data</button>
-            <span class="pill"><span>Matched users:</span> <b id="matchedPill">—</b></span>
+            <button class="btn" id="runBtn">
+              <span>Run Analysis</span>
+              <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+            <button class="btn secondary" id="demoBtn">Load Demo</button>
+            <span class="pill" id="matchedPillWrapper" style="display:none">Matched users: <b
+                id="matchedPill">0</b></span>
           </div>
           <div class="status" id="status"></div>
         </div>
@@ -416,76 +436,71 @@
 
       <section class="card">
         <div class="hd">
-          <h2>Summary</h2><span class="badge" id="modeBadge">Waiting</span>
+          <h2>Snapshot</h2><span class="badge" id="modeBadge">Ready</span>
         </div>
         <div class="bd">
           <div class="kpis">
             <div class="kpi">
-              <div class="label">Day 0 responses</div>
-              <div class="value" id="kpiDay0">—</div>
-              <div class="hint">Total results fetched for Day 0</div>
+              <div class="label">Matched Users</div>
+              <div class="value" id="kpiMatched">—</div>
+              <div class="hint">Have Day 0 & N</div>
             </div>
             <div class="kpi">
-              <div class="label">Day N responses</div>
-              <div class="value" id="kpiDayN">—</div>
-              <div class="hint">Total results fetched for Day N</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Avg change (Day N − Day 0)</div>
+              <div class="label">Avg Change</div>
               <div class="value" id="kpiDelta">—</div>
-              <div class="hint"><span id="deltaHint">Needs matched users</span></div>
+              <div class="hint">Score difference</div>
+            </div>
+            <div class="kpi">
+              <div class="label">Median Change</div>
+              <div class="value" id="kpiMedian">—</div>
+              <div class="hint">Typical impact</div>
             </div>
           </div>
-          <div style="height:10px"></div>
+          <div style="height:20px"></div>
           <div class="deltaGrid">
-            <div class="kpi">
-              <div class="label">Improved / Declined / Same</div>
-              <div class="hint" id="kpiCounts">—</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Median change</div>
-              <div class="value" id="kpiMedian">—</div>
-              <div class="hint">Computed over matched users only</div>
+            <div class="kpi" style="grid-column: span 1">
+              <div class="label">Impact Breakdown</div>
+              <div class="value"
+                style="font-size:15px; margin-top:10px; font-weight:500; display:flex; flex-direction:column; gap:6px; align-items:center;">
+                <span id="kpiImproved" style="color:#6ee7b7">— Improved</span>
+                <span id="kpiSame" style="color:rgba(255,255,255,0.5)">— Same</span>
+                <span id="kpiDeclined" style="color:#fda4af">— Declined</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
     </div>
 
-    <div style="height:14px"></div>
+    <div style="height:24px"></div>
 
     <div class="grid cols-3">
       <section class="card">
         <div class="hd">
-          <h2>Day 0 distribution</h2><span class="badge" id="day0Badge">—</span>
+          <h2>Day 0 Scores</h2>
         </div>
         <div class="bd">
           <div id="day0Bars" class="bars"></div>
-          <div style="height:10px"></div>
           <table class="table" id="day0Table"></table>
         </div>
       </section>
 
       <section class="card">
         <div class="hd">
-          <h2>Day N distribution</h2><span class="badge" id="dayNBadge">—</span>
+          <h2>Day <span id="dayNLabel">N</span> Scores</h2>
         </div>
         <div class="bd">
           <div id="dayNBars" class="bars"></div>
-          <div style="height:10px"></div>
           <table class="table" id="dayNTable"></table>
         </div>
       </section>
 
       <section class="card">
         <div class="hd">
-          <h2>Change (matched users)</h2><span class="badge" id="deltaBadge">—</span>
+          <h2>Change Distribution</h2>
         </div>
         <div class="bd">
-          <div class="status">This uses the same 1-point buckets, but on <span class="mono">delta = DayN − Day0</span>.
-          </div>
           <div id="deltaBars" class="bars"></div>
-          <div style="height:10px"></div>
           <table class="table" id="deltaTable"></table>
         </div>
       </section>
@@ -698,32 +713,32 @@
 
     function renderAll(result, dayN) {
       // Summary
-      $('kpiDay0').textContent = String(result.day0.total);
-      $('kpiDayN').textContent = String(result.dayN.total);
+      $('kpiMatched').textContent = String(result.matched);
       $('matchedPill').textContent = String(result.matched);
+      $('matchedPillWrapper').style.display = 'inline-flex';
+      $('dayNLabel').textContent = String(dayN);
 
       const delta = result.avgDelta;
-      $('kpiDelta').textContent = delta === null ? '—' : fmt(delta, 2);
-      $('kpiMedian').textContent = result.medDelta === null ? '—' : fmt(result.medDelta, 2);
+      $('kpiDelta').textContent = delta === null ? '—' : (delta > 0 ? '+' : '') + fmt(delta, 2);
+      $('kpiMedian').textContent = result.medDelta === null ? '—' : (result.medDelta > 0 ? '+' : '') + fmt(result.medDelta, 2);
 
       const totalMatched = result.matched;
-      $('kpiCounts').textContent = totalMatched
-        ? `Improved: ${result.improved} · Declined: ${result.declined} · Same: ${result.same}`
-        : '—';
-
-      $('deltaHint').textContent = totalMatched ? `Based on ${totalMatched} matched users` : 'Needs matched users';
-
-      // Badges
-      setBadge($('day0Badge'), `n=${result.day0.total}`, 'warn');
-      setBadge($('dayNBadge'), `Day ${dayN} · n=${result.dayN.total}`, 'warn');
 
       if (totalMatched) {
-        const kind = delta > 0 ? 'good' : (delta < 0 ? 'bad' : 'warn');
-        setBadge($('deltaBadge'), `Matched n=${totalMatched}`, kind);
-        setBadge($('modeBadge'), 'Ready', 'good');
+        $('kpiImproved').textContent = `${result.improved} Improved`;
+        $('kpiSame').textContent = `${result.same} Same`;
+        $('kpiDeclined').textContent = `${result.declined} Declined`;
       } else {
-        setBadge($('deltaBadge'), 'No matched users', 'warn');
-        setBadge($('modeBadge'), 'Ready', 'warn');
+        $('kpiImproved').textContent = `—`;
+        $('kpiSame').textContent = `—`;
+        $('kpiDeclined').textContent = `—`;
+      }
+
+      // State Badge
+      if (totalMatched) {
+        setBadge($('modeBadge'), 'Analysis Complete', 'good');
+      } else {
+        setBadge($('modeBadge'), 'No matched users', 'warn');
       }
 
       // Distributions (bars + tables)
@@ -733,11 +748,11 @@
       const mkScoreRows = (counts, total) => scoreBinLabels.map((label, i) => {
         const c = counts[i];
         const pct = total ? ((c / total) * 100) : 0;
-        return [label, String(c), total ? `${pct.toFixed(1)}%` : '—'];
+        return [label, String(c), total ? `${pct.toFixed(0)}%` : '—'];
       });
 
-      renderTable($('day0Table'), ['Range', 'Count', 'Percent'], mkScoreRows(result.day0.counts, result.day0.total));
-      renderTable($('dayNTable'), ['Range', 'Count', 'Percent'], mkScoreRows(result.dayN.counts, result.dayN.total));
+      renderTable($('day0Table'), ['Range', 'Count', '%'], mkScoreRows(result.day0.counts, result.day0.total));
+      renderTable($('dayNTable'), ['Range', 'Count', '%'], mkScoreRows(result.dayN.counts, result.dayN.total));
 
       // Delta
       const deltaLabels = deltaBins.map(b => b.label);
@@ -746,9 +761,9 @@
       const deltaRows = deltaLabels.map((label, i) => {
         const c = result.deltaCounts[i];
         const pct = deltaTotal ? (c / deltaTotal * 100) : 0;
-        return [label, String(c), deltaTotal ? `${pct.toFixed(1)}%` : '—'];
+        return [label, String(c), deltaTotal ? `${pct.toFixed(0)}%` : '—'];
       });
-      renderTable($('deltaTable'), ['Δ Range', 'Count', 'Percent'], deltaRows);
+      renderTable($('deltaTable'), ['Δ Range', 'Count', '%'], deltaRows);
     }
 
     // -----------------------------
