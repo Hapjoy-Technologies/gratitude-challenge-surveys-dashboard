@@ -3,7 +3,7 @@ import { fetchGeneratedSurveys } from "../lib/api.js";
 import { questionCount } from "../lib/survey.js";
 import SurveyDetail from "./SurveyDetail.jsx";
 
-export default function SurveyList({ onEdit }) {
+export default function SurveyList({ onEdit, onViewResponses }) {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -32,6 +32,7 @@ export default function SurveyList({ onEdit }) {
         item={selected}
         onBack={() => setSelected(null)}
         onEdit={onEdit}
+        onViewResponses={onViewResponses}
       />
     );
   }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { questionCount, QUESTION_TYPE_LABELS } from "../lib/survey.js";
 
 // Read-only detail for a cached survey, with an action to load it into the builder.
-export default function SurveyDetail({ item, onBack, onEdit }) {
+export default function SurveyDetail({ item, onBack, onEdit, onViewResponses }) {
   const [showJson, setShowJson] = useState(false);
   const def = item.definition || item;
   const json = JSON.stringify(def, null, 2);
@@ -99,10 +99,15 @@ export default function SurveyDetail({ item, onBack, onEdit }) {
           </div>
         )}
         
-        <div className="row" style={{ marginTop: "24px", paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.1)" }}>
+        <div className="row" style={{ marginTop: "24px", paddingTop: "16px", borderTop: "1px solid rgba(255,255,255,0.1)", display: "flex", gap: "8px" }}>
           <button className="btn" onClick={() => onEdit(def)}>
             Edit / Duplicate in builder
           </button>
+          {def.surveyType !== "external" && onViewResponses && (
+            <button className="btn secondary" onClick={() => onViewResponses(def)}>
+              View responses
+            </button>
+          )}
         </div>
       </div>
     </section>
